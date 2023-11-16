@@ -70,7 +70,7 @@ export class AppChromeService {
     Object.assign(newState, update);
 
     // KioskMode overrides chromeless state
-    newState.chromeless = newState.kioskMode === KioskMode.Full || this.currentRoute?.chromeless;
+    newState.chromeless = newState.kioskMode === KioskMode.Full || newState.kioskMode === KioskMode.FullVar || this.currentRoute?.chromeless;
 
     if (!this.ignoreStateUpdate(newState, current)) {
       this.state.next(newState);
@@ -143,6 +143,9 @@ export class AppChromeService {
       case '1':
       case true:
         this.update({ kioskMode: KioskMode.Full });
+        break;
+      case 'full-var':
+        this.update({kioskMode: KioskMode.FullVar});
     }
   }
 
@@ -152,6 +155,8 @@ export class AppChromeService {
         return 'tv';
       case KioskMode.Full:
         return true;
+      case KioskMode.FullVar:
+        return 'full-var';
       default:
         return null;
     }
